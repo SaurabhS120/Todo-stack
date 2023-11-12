@@ -3,14 +3,23 @@
     <head title="Todo app"></head>
     <body>
         <h1>Todo app</h1>
-        <div>
-            <p>Todo note 1</p>
+        <script>
+            function addTodo(){
+                console.log('add todo : '+todo);
+                var todoComponent = document.getElementById("todo-list");
+                var todoNameComponent = document.getElementById("todo-name");
+                var todo = todoNameComponent.value
+                todoComponent.innerHTML = todoComponent.innerHTML+"<div><p>"+todo+"</p></div>";
+                todoNameComponent.value = '';
+            }
+        </script>
+        <div id="todo-list">
+
         </div>
-        <div>
-            <p>Todo note 2</p>
-        </div>
-        <div>
-            <p>Todo note 3</p>
-        </div>
+        <p><b>Add todo :</b></p>
+        <form id="todo-from" onsubmit="addTodo();return false;">
+            <input type="text" id="todo-name"/>
+            <input type="submit" id="todo-add-button" value="add"/>
+        </form>
     </body>
 </html>
