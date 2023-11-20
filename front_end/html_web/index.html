@@ -17,8 +17,8 @@
 
         </div>
         <p><b>Add todo :</b></p>
-        <form id="todo-from" onsubmit="addTodo();return false;">
-            <input type="text" id="todo-name"/>
+        <form id="todo-from" action="http://localhost:3000/addTodo/" method="post">
+            <input type="text" id="todo-name" name="title"/>
             <input type="submit" id="todo-add-button" value="add"/>
         </form>
     </body>
