@@ -3,6 +3,16 @@ const app = express()
 const formData = require('express-form-data');//parse postman post req body
 const winston = require('winston');
 const bodyParser = require('body-parser');//parse html form data
+var sql = require('mssql');
+
+var dbConfig = {
+    server:'localhost',
+    database:'NotesDB',
+    user:'SA',
+    password:process.env.SQL_PATH,
+    port:1433
+};
+connection.connect();
 
 app.use(formData.parse());
 
