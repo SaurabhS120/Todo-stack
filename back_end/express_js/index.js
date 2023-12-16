@@ -6,16 +6,6 @@ const bodyParser = require('body-parser');//parse html form data
 const pgp = require('pg-promise')(/* options */)
 const db = pgp('postgres://postgres:mysecretpassword@localhost:5432/notesdb')
 
-db.any('SELECT * FROM notes;')
-  .then((data) => {
-    data.forEach((item)=>{
-      console.log('ID:', item.id)
-      console.log('Note:', item.note)
-    })
-  })
-  .catch((error) => {
-    console.log('ERROR:', error)
-  })
 
 app.use(formData.parse());
 
@@ -41,12 +31,55 @@ app.get('/', function (req, res) {
   res.send('Hello World')
 })
 
+app.get('/getTodo', function (req, res,next) {
+  setTimeout(() => {
+    db.any('SELECT * FROM notes;')
+    .then((data) => {
+      var responsBody=''
+      responsBody +='<html>'
+      responsBody +='<body>'
+      responsBody +='<table>'
+      responsBody +='<td>Id</td>'
+      responsBody +='<td>Note</td>'
+      data.forEach((item)=>{
+        var id = item.id;
+        var note = item.note;
+        console.log('ID:', id)
+        console.log('Note:', note)
+        responsBody +='<tr>'
+        responsBody +=`<td>${id}</td>`
+        responsBody +=`<td>${note}</td>`
+        responsBody +='</tr>'
+      })
+      responsBody +='</table>'
+      responsBody +='</body>'
+      responsBody +='</html>'
+      res.send(responsBody)
+    })
+    .catch((error) => {
+      console.log('ERROR:', error)
+      next('ERROR:', error)
+    })
+  }, 100)
+})
+
 app.post('/addTodo', function (req, res,next) {
-  console.log("title : "+req.body.title);
-  var responseText = "Todo Added"
-  responseText+="<br> Todo title : "+req.body.title;
-  res.send(responseText);
-  next();
+  var todo_title = req.body.title;
+  console.log("title : "+todo_title);
+  setTimeout(() => {
+    db.none('INSERT INTO notes(note) VALUES (${note});',{
+      note:todo_title
+    })
+    .then((data) => {
+      var responseText = "Todo Added"
+      responseText+="<br> Todo title : "+todo_title;
+      res.send(responseText)
+    })
+    .catch((error) => {
+      console.log('ERROR:', error)
+      next('ERROR:', error)
+    })
+  }, 100)
 })
 
 app.listen(3000)
