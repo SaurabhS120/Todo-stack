@@ -1,0 +1,26 @@
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD={Password}" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest
+
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Password"
+
+CREATE DATABASE NotesDB;
+
+use NotesDB;
+
+SELECT name, database_id, create_date  
+FROM sys.databases;  
+GO  
+  
+
+CREATE TABLE Notes (
+    ID int NOT NULL IDENTITY,
+    note varchar(32),
+    PRIMARY KEY (ID)
+);
+
+SELECT table_name
+FROM INFORMATION_SCHEMA.TABLES
+WHERE table_type = 'BASE TABLE';
+
+INSERT INTO notes(note) VALUES ('test note');
+
+GO
