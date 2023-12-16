@@ -3,16 +3,19 @@ const app = express()
 const formData = require('express-form-data');//parse postman post req body
 const winston = require('winston');
 const bodyParser = require('body-parser');//parse html form data
-var sql = require('mssql');
+const pgp = require('pg-promise')(/* options */)
+const db = pgp('postgres://postgres:mysecretpassword@localhost:5432/notesdb')
 
-var dbConfig = {
-    server:'localhost',
-    database:'NotesDB',
-    user:'SA',
-    password:process.env.SQL_PATH,
-    port:1433
-};
-connection.connect();
+db.any('SELECT * FROM notes;')
+  .then((data) => {
+    data.forEach((item)=>{
+      console.log('ID:', item.id)
+      console.log('Note:', item.note)
+    })
+  })
+  .catch((error) => {
+    console.log('ERROR:', error)
+  })
 
 app.use(formData.parse());
 
