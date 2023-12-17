@@ -4,7 +4,7 @@ const formData = require('express-form-data');//parse postman post req body
 const winston = require('winston');
 const bodyParser = require('body-parser');//parse html form data
 const pgp = require('pg-promise')(/* options */)
-const db = pgp('postgres://postgres:mysecretpassword@localhost:5432/notesdb')
+const db = pgp('postgres://postgres:mysecretpassword@172.17.0.2:5432/notesdb')
 
 
 app.use(formData.parse());
