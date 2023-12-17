@@ -1,26 +1,22 @@
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD={Password}" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest
+docker run --name notes-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
 
-/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Password"
+psql -h localhost -p 5432 -U postgres
 
 CREATE DATABASE NotesDB;
 
-use NotesDB;
+SELECT datname FROM pg_database;
 
-SELECT name, database_id, create_date  
-FROM sys.databases;  
-GO  
+\c notesdb
   
 
 CREATE TABLE Notes (
-    ID int NOT NULL IDENTITY,
-    note varchar(32),
-    PRIMARY KEY (ID)
+    ID serial primary key,
+    note varchar(32)
 );
 
-SELECT table_name
-FROM INFORMATION_SCHEMA.TABLES
-WHERE table_type = 'BASE TABLE';
+SELECT *
+FROM pg_catalog.pg_tables
+WHERE schemaname != 'pg_catalog' AND 
+    schemaname != 'information_schema';
 
 INSERT INTO notes(note) VALUES ('test note');
-
-GO
