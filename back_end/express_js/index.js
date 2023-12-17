@@ -82,4 +82,18 @@ app.post('/addTodo', function (req, res,next) {
   }, 100)
 })
 
+
+app.get('/deleteAllNotes', function (req, res,next) {
+  setTimeout(() => {
+    db.none('DELETE FROM notes;')
+    .then((data) => {
+      res.send("All notes are deleted")
+    })
+    .catch((error) => {
+      console.log('ERROR:', error)
+      next('ERROR:', error)
+    })
+  }, 100)
+})
+
 app.listen(3000)
