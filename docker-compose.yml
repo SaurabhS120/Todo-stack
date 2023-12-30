@@ -2,21 +2,31 @@
 version: '3.1'
 
 services:
-
   db:
     image: postgres
     restart: always
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
       - D:/Github/Todo stack/back_end/sql container/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+  notes_express_server:
+    build:
+      context: back_end\express_js
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    links:
+      - "db:database"
+
 volumes:
   pgdata:
