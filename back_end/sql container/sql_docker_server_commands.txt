@@ -1,6 +1,6 @@
 docker run --name notes-postgres --ip=172.17.42.2 -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
 
-psql -h 162.243.160.39 -p 5432 -U postgres
+psql -h localhost -p 5432 -U postgres
 
 CREATE DATABASE NotesDB;
 
