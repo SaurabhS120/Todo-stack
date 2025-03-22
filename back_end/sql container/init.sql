@@ -1,5 +1,5 @@
 CREATE USER docker;
-CREATE DATABASE NotesDB;
+-- CREATE DATABASE NotesDB;    
 
 SELECT datname FROM pg_database;
 
